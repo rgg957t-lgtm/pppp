@@ -1,0 +1,890 @@
+HTML
+<!DOCTYPE html>
+<html lang="th" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Anti-Fungal IoT Packaging | นวัตกรรมบรรจุภัณฑ์อัจฉริยะยับยั้งเชื้อรา</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6.5.1 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts (Prompt) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Three.js & OrbitControls CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            950: '#052e16',
+                        },
+                        tech: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            950: '#083344',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 transition-colors duration-300 min-h-screen flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-tech-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-box-tissue"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg text-white leading-none block">Bio-IoT Packaging</span>
+                    <span class="text-xs text-brand-400 font-medium">Smart Anti-Fungal Logistics System</span>
+                </div>
+            </div>
+
+            <nav class="hidden xl:flex items-center space-x-5 text-xs font-medium text-slate-300">
+                <a href="#overview" class="hover:text-brand-400 transition">ภาพรวมวิจัย</a>
+                <a href="#eco-concept" class="hover:text-brand-400 transition">นิเวศบรรจุภัณฑ์</a>
+                <a href="#principles" class="hover:text-brand-400 transition">หลักการและทฤษฎี</a>
+                <a href="#architecture" class="hover:text-brand-400 transition">ระบบการทำงาน</a>
+                <a href="#viewer3d" class="hover:text-brand-400 transition">โครงสร้าง 3D</a>
+                <a href="#telemetry" class="hover:text-brand-400 transition">IoT Telemetry</a>
+                <a href="#calculator" class="hover:text-brand-400 transition">คำนวณความเสี่ยง</a>
+                <a href="#experiment" class="hover:text-brand-400 transition">ผลทดลอง</a>
+                <a href="#bcg" class="hover:text-brand-400 transition">โมเดล BCG</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-sun" id="themeIcon"></i>
+                </button>
+                <button onclick="openModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-xl shadow-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>รายงานฉบับเต็ม</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 w-full">
+
+        <!-- Hero Banner Section -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-brand-950 text-white p-8 md:p-12 shadow-2xl border border-slate-700">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+                        <span>นวัตกรรมบรรจุภัณฑ์แอคทีฟเพื่อการเกษตรแม่นยำ (Active Precision Eco-Packaging)</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
+                        บรรจุภัณฑ์อัจฉริยะยับยั้งเชื้อรา <br class="hidden sm:inline">
+                        <span class="bg-gradient-to-r from-brand-400 to-tech-400 bg-clip-text text-transparent">ด้วยกัมเมล็ดแมงลัก แซนโทน และ IoT</span>
+                    </h1>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl">
+                        บูรณาการสารสกัดชีวภาพแซนโทนจากเปลือกมังคุดและเมทริกซ์กัมเมล็ดแมงลัก เข้ากับระบบตรวจวัดก๊าซบูดเน่าและชิปประมวลผล IoT ESP32 เพื่อการขนส่งผลไม้เมืองร้อนอย่างยั่งยืน
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <a href="#telemetry" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 font-semibold shadow-lg transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>ทดลองระบบ IoT Simulation</span>
+                        </a>
+                        <a href="#viewer3d" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold border border-slate-600 transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>สำรวจแบบจำลอง 3D</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center space-y-1">
+                        <div class="text-3xl font-extrabold text-brand-400">+200%</div>
+                        <div class="text-xs text-slate-300 font-medium">ยืดอายุการเก็บรักษา</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center space-y-1">
+                        <div class="text-3xl font-extrabold text-tech-400">94.8%</div>
+                        <div class="text-xs text-slate-300 font-medium">ยับยั้งสปอร์เชื้อรา</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center space-y-1">
+                        <div class="text-3xl font-extrabold text-amber-400">-75%</div>
+                        <div class="text-xs text-slate-300 font-medium">ลดสูญเสียหลังเก็บเกี่ยว</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/70 border border-slate-700 text-center space-y-1">
+                        <div class="text-3xl font-extrabold text-emerald-400">100%</div>
+                        <div class="text-xs text-slate-300 font-medium">ย่อยสลายตามธรรมชาติ</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Background & Science -->
+        <section id="overview" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-brand-500 pl-4">
+                <h2 class="text-2xl font-bold">1. ที่มา ความสำคัญ และกลไกทางวิทยาศาสตร์</h2>
+                <p class="text-slate-400 text-xs sm:text-sm">ปัญหาการสูญเสียในโลจิสติกส์เกษตร และทางออกด้วยนวัตกรรมชีวภาพร่วมกับดิจิทัล</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-virus-slash"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">วิกฤตความสูญเสียหลังเก็บเกี่ยว</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        การขนส่งผลไม้เมืองร้อน (สตรอว์เบอร์รี ทุเรียนตัดแต่ง มะม่วง องุ่น) ประสบปัญหาการสูญเสียสูงถึง <strong>30-40%</strong> จากการเข้าทำลายของเชื้อราสายพันธุ์สำคัญ ได้แก่ <i>Aspergillus niger</i>, <i>Penicillium digitatum</i>, <i>Botrytis cinerea</i> และ <i>Colletotrichum gloeosporioides</i>
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-capsules"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">ไมโครแคปซูลสารสกัดชีวภาพ</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        การใช้สารสกัดธรรมชาติแซนโทนจากเปลือกมังคุดและน้ำมันหอมระเหย ร่วมกับเมทริกซ์ฟิล์มกัมเมล็ดแมงลัก เพื่อควบคุมอัตราการปลดปล่อยไอระเหยยับยั้งการงอกของสปอร์ราโดยไร้สารเคมีตกค้าง
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-tech-500/20 text-tech-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">ระบบขับเคลื่อนอัจฉริยะ IoT</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        โมดูล ESP32 ติดตั้งเซ็นเซอร์ DHT22 (Temp/RH) และ MQ135 (VOCs/Ammonia) ประเมินความเสี่ยงรา และสั่งการพ่นไอละอองยับยั้งอัตโนมัติเมื่อค่าสภาวะเข้าสู่จุดวิกฤต
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Eco-Packaging Concept -->
+        <section id="eco-concept" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-emerald-500 pl-4">
+                <h2 class="text-2xl font-bold">3. นิเวศบรรจุภัณฑ์ (Eco-Packaging Concept)</h2>
+                <p class="text-xs text-slate-400">กรอบแนวคิดการผสานบรรจุภัณฑ์เชิงรุก บรรจุภัณฑ์อัจฉริยะ และการหมุนเวียนทรัพยากร</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Section 3.1 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-brand-400">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                        <h3 class="font-bold text-sm">Section 3.1: บรรจุภัณฑ์มีปฏิสัมพันธ์ (Active Packaging)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        เน้นการเปลี่ยนบรรจุภัณฑ์จากภาชนะรองรับแบบตั้งรับ (Passive) ไปสู่การมีปฏิสัมพันธ์เชิงรุกกับสภาวะภายใน บรรจุภัณฑ์จะปลดปล่อยสารออกฤทธิ์ทางชีวภาพ (Antimicrobial Agents) และดูดซับความชื้นส่วนเกิน เพื่อเข้าควบคุมจุลินทรีย์เป้าหมาย ปรับสภาวะบรรยากาศภายในให้เหมาะสมตลอดการขนส่ง
+                    </p>
+                </div>
+
+                <!-- Section 3.2 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-tech-400">
+                        <i class="fa-solid fa-brain text-lg"></i>
+                        <h3 class="font-bold text-sm">Section 3.2: บรรจุภัณฑ์อัจฉริยะ (Smart Packaging)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        การติดตั้งอุปกรณ์อิเล็กทรอนิกส์ขนาดเล็ก (IoT Indicators & Sensors) สำหรับติดตาม ตรวจวัด และสื่อสารข้อมูลคุณภาพของสินค้า เช่น อุณหภูมิ ความชื้น และก๊าซบูดเน่า แบบเรียลไทม์ ช่วยให้ผู้ควบคุมห่วงโซ่อุปทานตัดสินใจการจัดการโลจิสติกส์ได้อย่างแม่นยำ
+                    </p>
+                </div>
+
+                <!-- Section 3.3 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-amber-400">
+                        <i class="fa-solid fa-recycle text-lg"></i>
+                        <h3 class="font-bold text-sm">Section 3.3: การหมุนเวียนทรัพยากร (Zero Waste & Circular)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        โครงสร้างหลักผลิตจากเยื่อกระดาษขึ้นรูป (Molded Pulp) และพอลิเมอร์ชีวภาพที่ย่อยสลายได้ตามธรรมชาติ 100% ส่วนโมดูลอิเล็กทรอนิกส์ IoT ถูกออกแบบให้ถอดประกอบได้ง่าย (Modular Design) เพื่อนำกลับมาหมุนเวียนใช้ใหม่ (Reuse) ได้มากกว่า 50 รอบ ลดขยะอิเล็กทรอนิกส์
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Principles & Theories -->
+        <section id="principles" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-tech-500 pl-4">
+                <h2 class="text-2xl font-bold">4. หลักการและทฤษฎี (Principles & Theories)</h2>
+                <p class="text-xs text-slate-400">ฐานทฤษฎีทางรีโอโลยี สารชีวภาพ กลไกการยับยั้งเชื้อรา และสมองกลฝังตัว</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Section 4.1 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-emerald-400">
+                        <i class="fa-solid fa-[#]"></i>
+                        <h3 class="font-bold text-sm">Section 4.1: โครงสร้างกัมเมล็ดแมงลัก (Sweet Basil Seed Gum Properties)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        กัมเมล็ดแมงลัก (Sweet Basil Seed Gum: SBSG) เป็นเฮเทอโรพอลิแซ็กคาไรด์น้ำหนักโมเลกุลสูง ประกอบด้วย Glucomannan และ Xylan มีคุณสมบัติการพองตัวและจับน้ำได้สูงมาก (High Water Holding Capacity) ฟิล์มที่ได้จาก SBSG มีคุณสมบัติกั้นการผ่านของก๊าซออกซิเจนได้ดี และเหมาะสำหรับทำหน้าที่เป็นไฮโดรเจลเมทริกซ์ในการกักเก็บและค่อยๆ ปลดปล่อยสารกั้นเชื้อรา
+                    </p>
+                </div>
+
+                <!-- Section 4.2 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-rose-400">
+                        <i class="fa-solid fa-vial-virals"></i>
+                        <h3 class="font-bold text-sm">Section 4.2: ฤทธิ์ชีวภาพแซนโทนจากเปลือกมังคุด (Xanthones Bioactivity)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        สารสกัดแซนโทน (Xanthones) โดยเฉพาะ <strong>&alpha;-Mangostin</strong> จากเปลือกมังคุด มีฤทธิ์ต้านต้านจุลินทรีย์และต้านเชื้อราที่เข้มข้น มีค่า Minimum Inhibitory Concentration (MIC) ต่ำในการยับยั้งการเจริญเติบโตของราสายพันธุ์สำคัญ โดยไม่ออกฤทธิ์เป็นพิษต่อเซลล์พืชของผลไม้สด
+                    </p>
+                </div>
+
+                <!-- Section 4.3 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-amber-400">
+                        <i class="fa-solid fa-dna"></i>
+                        <h3 class="font-bold text-sm">Section 4.3: กลไกการออกฤทธิ์ยับยั้งเชื้อรา (Fungal Spore Inhibition)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        สารประกอบแซนโทนและไอระเหยจะเข้าทำลายความสมบูรณ์ของผนังเซลล์เชื้อรา (Cell Membrane Permeability Disruption) โดยการแทรกซึมเข้าชั้นฟอสโฟลิพิด ส่งผลให้เกิดการรั่วไหลของสารชีวโมเลกุลภายในเซลล์ (Leakage of Essential Intracellular Components) และขัดขวางการสร้างเออร์โกสเตอรอล (Ergosterol Biosynthesis) ทำให้สปอร์ราไม่สามารถงอกเส้นใยได้
+                    </p>
+                </div>
+
+                <!-- Section 4.4 -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center space-x-2 text-cyan-400">
+                        <i class="fa-solid fa-microchip"></i>
+                        <h3 class="font-bold text-sm">Section 4.4: ทฤษฎีระบบเซนเซอร์และสมองกลฝังตัว (IoT & Sensors Theory)</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ประยุกต์ใช้หลักการแปลงสัญญาณทางกายภาพและเคมีเป็นสัญญาณไฟฟ้า เซนเซอร์ capacitive ทำหน้าที่แปลงค่าความชื้น สารกึ่งตัวนำโลหะออกไซด์ (SnO2) ทำหน้าที่ตรวจจับการเปลี่ยนแปลงของก๊าซระเหย นำสัญญาณเข้าสู่วงจรแปลงสัญญาณ ADC และประมวลผลด้วยทฤษฎีระบบควบคุมป้อนกลับ (Feedback Control Loop) ในไมโครคอนโทรลเลอร์
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: System Architecture -->
+        <section id="architecture" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-brand-600 pl-4">
+                <h2 class="text-2xl font-bold">5. ระบบการทำงาน (System Architecture)</h2>
+                <p class="text-xs text-slate-400">โครงสร้างการรับสัญญาณ ประมวลผล และการขับเคลื่อนอุปกรณ์ยับยั้ง</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Section 5.1 Workflow -->
+                <div class="lg:col-span-12 p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                    <h3 class="font-bold text-sm text-brand-400 flex items-center space-x-2">
+                        <i class="fa-solid fa-diagram-project"></i>
+                        <span>Section 5.1: แผนผังการทำงานของระบบ (System Workflow Diagram)</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center text-xs">
+                        <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+                            <div class="font-bold text-tech-400 mb-1">1. Data Sensing</div>
+                            <div class="text-slate-400">DHT22 & MQ135 ตรวจวัดค่าความชื้น อุณหภูมิ และ VOCs</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+                            <div class="font-bold text-amber-400 mb-1">2. Risk Assessment</div>
+                            <div class="text-slate-400">ESP32 คำนวณความเสี่ยงราด้วยแบบจำลองคณิตศาสตร์</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+                            <div class="font-bold text-rose-400 mb-1">3. Active Trigger</div>
+                            <div class="text-slate-400">สั่งงาน Micro-Ultrasonic Atomizer พ่นสารยับยั้ง</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+                            <div class="font-bold text-brand-400 mb-1">4. Cloud Sync</div>
+                            <div class="text-slate-400">ส่งข้อมูลผ่าน Wi-Fi/BLE แสดงผลบน Dashboard</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5.2 -->
+                <div class="lg:col-span-4 p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-blue-400">Section 5.2: ตรวจวัดความชื้น (DHT22)</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ใช้องค์ประกอบวัดความชื้นแบบ Capacitive ร่วมกับ NTC Thermistor ส่งข้อมูลดิจิทัล 40-bit ผ่านโปรโตคอล Single-Bus ด้วยความแม่นยำ &plusmn;2% RH ช่วยเฝ้าระวังจุดน้ำค้าง (Dew Point) ที่เสี่ยงต่อการงอกของสปอร์รา
+                    </p>
+                </div>
+
+                <!-- Section 5.3 -->
+                <div class="lg:col-span-4 p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-amber-400">Section 5.3: ตรวจวัดก๊าซบูดเน่า (MQ135)</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ตรวจวัดสารระเหยง่าย (VOCs), แอมโมเนีย (NH3) และแอลกอฮอล์จากการบูดเน่าของผลไม้ ผ่านการเปลี่ยนแปลงค่าความต้านทานไฟฟ้าของชั้น SnO2 เมื่อก๊าซบูดเน่าสัมผัสกับพื้นผิวที่ความร้อนสูง
+                    </p>
+                </div>
+
+                <!-- Section 5.4 -->
+                <div class="lg:col-span-4 p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-emerald-400">Section 5.4: ประมวลผลสภาวะเสี่ยง (ESP32)</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ใช้ชิปไมโครคอนโทรลเลอร์ Xtensa Dual-Core 32-bit ทำงานในระบบประหยัดพลังงาน (Deep Sleep Mode) ทำหน้าที่คำนวณอัลกอริทึมคะแนนความเสี่ยง (Fungal Risk Score) และควบคุมการทำงานของวาล์วพ่นสารชีวภาพ
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Interactive 3D Explorer -->
+        <section id="viewer3d" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-cube text-brand-400"></i>
+                        <span>6. โครงสร้างบรรจุภัณฑ์แบบ 3 มิติ (3D Interactive Model)</span>
+                    </h2>
+                    <p class="text-xs text-slate-400">คลิกลากเพื่อหมุน 3D สกรอลล์เพื่อซูม และกดปุ่มแยกชั้นส่วนประกอบ</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="btnExplode" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-xl shadow transition">
+                        <i class="fa-solid fa-layer-group mr-1"></i> แยกชั้นส่วนประกอบ (Explode View)
+                    </button>
+                    <button id="btnReset3D" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                        <i class="fa-solid fa-rotate mr-1"></i> รีเซ็ตมุมมอง
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3D Canvas -->
+            <div class="relative w-full h-[420px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+                <div id="threejs-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+                <!-- Legend -->
+                <div class="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700 text-xs text-slate-300 flex flex-wrap justify-around gap-2">
+                    <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-amber-600 inline-block"></span> <span>1. กล่องลูกฟูกย่อยสลายได้</span></span>
+                    <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> <span>2. ถาดกัมแมงลัก/เยื่อกระดาษ</span></span>
+                    <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span> <span>3. โหนด ESP32/เซ็นเซอร์ IoT</span></span>
+                    <span class="flex items-center space-x-1"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> <span>4. ผลไม้/สินค้าเกษตร</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Live Telemetry Dashboard -->
+        <section id="telemetry" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-network-wired text-tech-400"></i>
+                        <span>7. แผงควบคุมและจำลองข้อมูล IoT Telemetry (Real-time Simulation)</span>
+                    </h2>
+                    <p class="text-xs text-slate-400">จำลองการทำงานของเซ็นเซอร์ DHT22/MQ135 และการตอบสนองบรรจุภัณฑ์</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ESP32 Active
+                    </span>
+                </div>
+            </div>
+
+            <!-- Controls & Gauges -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Preset Buttons -->
+                <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-xs text-slate-300 uppercase">เลือกสถานการณ์ขนส่ง (Scenarios)</h3>
+                    <button onclick="setScenario('normal')" class="w-full text-left p-3 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+                        🟢 <b>สภาวะปกติ</b> (22.5°C / 65% RH)
+                    </button>
+                    <button onclick="setScenario('warning')" class="w-full text-left p-3 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+                        🟡 <b>ความชื้นสูงเสี่ยงรา</b> (28.5°C / 84% RH)
+                    </button>
+                    <button onclick="setScenario('danger')" class="w-full text-left p-3 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+                        🔴 <b>วิกฤตสปอร์งอก</b> (34.0°C / 96% RH)
+                    </button>
+                    <hr class="border-slate-800 my-2">
+                    <button onclick="triggerSpray()" class="w-full py-3 bg-tech-600 hover:bg-tech-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 shadow-lg">
+                        <i class="fa-solid fa-spray-can"></i>
+                        <span>สั่งพ่นสารชีวภาพทันที (Manual Bio-Spray)</span>
+                    </button>
+                </div>
+
+                <!-- Live Indicators -->
+                <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                        <div class="flex justify-between items-center text-slate-400 text-xs">
+                            <span>อุณหภูมิ (DHT22)</span>
+                            <i class="fa-solid fa-temperature-half text-amber-400 text-base"></i>
+                        </div>
+                        <div class="my-3">
+                            <span id="tempVal" class="text-3xl font-extrabold text-white">22.5</span> <span class="text-sm text-slate-400">°C</span>
+                        </div>
+                        <div class="text-[11px] text-slate-500">ช่วงปลอดภัย: 15.0 - 25.0 °C</div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                        <div class="flex justify-between items-center text-slate-400 text-xs">
+                            <span>ความชื้นสัมพัทธ์ (DHT22)</span>
+                            <i class="fa-solid fa-droplet text-blue-400 text-base"></i>
+                        </div>
+                        <div class="my-3">
+                            <span id="rhVal" class="text-3xl font-extrabold text-white">65.0</span> <span class="text-sm text-slate-400">%</span>
+                        </div>
+                        <div class="text-[11px] text-slate-500">จุดวิกฤตสปอร์รา: > 80.0%</div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                        <div class="flex justify-between items-center text-slate-400 text-xs">
+                            <span>สถานะ Bio-Dispenser</span>
+                            <i class="fa-solid fa-shield-virus text-brand-400 text-base"></i>
+                        </div>
+                        <div class="my-3">
+                            <span id="statusVal" class="text-xl font-bold text-emerald-400">STANDBY</span>
+                        </div>
+                        <div id="lastSprayText" class="text-[11px] text-slate-500">พ่นล่าสุด: 15 นาทีที่แล้ว</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telemetry Graph -->
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                <h3 class="text-xs font-bold text-slate-300 mb-4 uppercase">กราฟสตรีมมิ่งข้อมูลเรียลไทม์ (Live Telemetry Data Stream)</h3>
+                <div class="w-full h-64">
+                    <canvas id="telemetryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Fungal Risk & Shelf-life Calculator -->
+        <section id="calculator" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-amber-500 pl-4">
+                <h2 class="text-2xl font-bold">8. เครื่องมือคำนวณความเสี่ยงราและอายุการเก็บรักษา (Interactive Calculator)</h2>
+                <p class="text-xs text-slate-400">คำนวณจากแบบจำลองคณิตศาสตร์อัตราการเจริญเติบโตของเชื้อรา (Fungal Spore Germination Model)</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Sliders -->
+                <div class="lg:col-span-6 space-y-6 bg-slate-900 p-6 rounded-2xl border border-slate-800">
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-2">
+                            <span>อุณหภูมิแวดล้อม (°C):</span>
+                            <span id="lblTemp" class="font-bold text-amber-400">25 °C</span>
+                        </div>
+                        <input type="range" id="rngTemp" min="10" max="40" value="25" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-2">
+                            <span>ความชื้นสัมพัทธ์ (%RH):</span>
+                            <span id="lblRH" class="font-bold text-blue-400">70 %</span>
+                        </div>
+                        <input type="range" id="rngRH" min="40" max="98" value="70" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <div class="pt-2 flex items-center space-x-3">
+                        <input type="checkbox" id="chkBio" checked class="w-5 h-5 rounded accent-brand-500 cursor-pointer">
+                        <label for="chkBio" class="text-xs font-semibold cursor-pointer">เปิดใช้งาน Active Bio-Capsule Packaging System</label>
+                    </div>
+                </div>
+
+                <!-- Calculated Output -->
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-2">
+                        <span class="text-xs text-slate-400 font-medium">โอกาสการเกิดสปอร์เชื้อรา</span>
+                        <div id="resRisk" class="text-4xl font-extrabold text-emerald-400 my-2">12.5%</div>
+                        <span id="resBadge" class="text-xs px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800 inline-block">ความเสี่ยงต่ำ (Low Risk)</span>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-2">
+                        <span class="text-xs text-slate-400 font-medium">คาดการณ์อายุการเก็บรักษา</span>
+                        <div id="resDays" class="text-4xl font-extrabold text-brand-400 my-2">18 วัน</div>
+                        <span id="resCompare" class="text-xs text-amber-400 font-medium">นานกว่าปกติ +10 วัน</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Experimental Analytics & Data Table -->
+        <section id="experiment" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-tech-500 pl-4">
+                <h2 class="text-2xl font-bold">9. ผลการทดลองและการเปรียบเทียบประสิทธิภาพเชิงวิชาการ</h2>
+                <p class="text-xs text-slate-400">สรุปผลการทดสอบในห้องปฏิบัติการเทียบกับการทดลองขนส่งจริงตลอด 20 วัน</p>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left text-slate-300 border border-slate-800 rounded-xl overflow-hidden">
+                    <thead class="bg-slate-900 text-slate-200 uppercase font-semibold border-b border-slate-800">
+                        <tr>
+                            <th class="p-3.5">พารามิเตอร์การทดสอบ</th>
+                            <th class="p-3.5 text-rose-400">กล่องกระดาษทั่วไป (Control)</th>
+                            <th class="p-3.5 text-amber-400">กล่องสารสกัดชีวภาพแบบเดิม (Passive)</th>
+                            <th class="p-3.5 text-emerald-400">Smart Anti-Fungal IoT Packaging</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 bg-slate-950/50">
+                        <tr>
+                            <td class="p-3.5 font-medium">อัตราการยับยั้งสปอร์เชื้อรา (%)</td>
+                            <td class="p-3.5">0.0%</td>
+                            <td class="p-3.5">62.4%</td>
+                            <td class="p-3.5 font-bold text-emerald-400">94.8%</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3.5 font-medium">อายุการเก็บรักษาสตรอว์เบอร์รี (วัน)</td>
+                            <td class="p-3.5">4 วัน</td>
+                            <td class="p-3.5">8 วัน</td>
+                            <td class="p-3.5 font-bold text-emerald-400">14 วัน (+250%)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3.5 font-medium">อายุการเก็บรักษาทุเรียนตัดแต่ง (วัน)</td>
+                            <td class="p-3.5">3 วัน</td>
+                            <td class="p-3.5">6 วัน</td>
+                            <td class="p-3.5 font-bold text-emerald-400">10 วัน (+233%)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3.5 font-medium">อัตราความสูญเสียผลผลิตหลังขนส่ง 20 วัน</td>
+                            <td class="p-3.5 text-rose-400 font-bold">100% (เน่าเสียทั้งหมด)</td>
+                            <td class="p-3.5">45%</td>
+                            <td class="p-3.5 font-bold text-emerald-400">24% (-76%)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3.5 font-medium">ความสามารถในการย่อยสลายบรรจุภัณฑ์</td>
+                            <td class="p-3.5">ย่อยสลายได้ (มีคราบเคมี)</td>
+                            <td class="p-3.5">ย่อยสลายได้ 100%</td>
+                            <td class="p-3.5 font-bold text-emerald-400">ย่อยสลายได้ 100% + โหนด IoT รีไซเคิลได้</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 h-72">
+                    <h3 class="text-xs font-bold text-slate-300 mb-3">อัตราการเน่าเสียของผลไม้สะสม (%) ตลอด 20 วัน</h3>
+                    <canvas id="chartSpoilage"></canvas>
+                </div>
+                <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 h-72">
+                    <h3 class="text-xs font-bold text-slate-300 mb-3">อายุการเก็บรักษาเปรียบเทียบตามประเภทผลไม้ (วัน)</h3>
+                    <canvas id="chartShelf"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: BCG Economic Model Alignment -->
+        <section id="bcg" class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+            <div class="border-l-4 border-brand-600 pl-4">
+                <h2 class="text-2xl font-bold">10. การขับเคลื่อนตามโมเดลเศรษฐกิจ BCG (Bio-Circular-Green Economy)</h2>
+                <p class="text-xs text-slate-400">การประยุกต์ใช้นวัตกรรมเพื่อความยั่งยืนในห่วงโซ่เกษตรและอาหาร</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">B</div>
+                    <h3 class="font-bold text-base text-emerald-400">Bio Economy (เศรษฐกิจชีวภาพ)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        นำสารสกัดแซนโทนจากเปลือกมังคุดและกัมเมล็ดแมงลักมาสร้างมูลค่าเพิ่มทางการเกษตร ทดแทนสารเคมีสังเคราะห์ที่มีพิษตกค้าง
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-blue-950/40 border border-blue-800/50 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">C</div>
+                    <h3 class="font-bold text-base text-blue-400">Circular Economy (เศรษฐกิจหมุนเวียน)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ใช้วัสดุย่อยสลายได้ 100% ออกแบบชิป IoT ESP32 แบบโมดูลาร์ให้ถอดประกอบหมุนเวียนซ้ำได้มากกว่า 50 รอบการขนส่ง
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-teal-950/40 border border-teal-800/50 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-lg">G</div>
+                    <h3 class="font-bold text-base text-teal-400">Green Economy (เศรษฐกิจสีเขียว)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ลดปริมาณขยะอาหาร (Food Loss) ได้มากกว่า 75% ช่วยลดการเกิดก๊าซมีเทนและคาร์บอนฟุตพริ้นท์ตลอดห่วงโซ่อุปทาน
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Research Paper Full Modal -->
+    <div id="paperModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 max-w-3xl w-full rounded-3xl p-6 md:p-8 space-y-6 max-h-[85vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 class="text-lg font-bold text-white">รายงานวิจัยฉบับเต็ม (Full Research Abstract)</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+                <h4 class="font-bold text-sm text-brand-400">หัวข้อ: การพัฒนายับยั้งเชื้อราในบรรจุภัณฑ์ผลไม้สดด้วยนวัตกรรมกัมเมล็ดแมงลัก แซนโทน และ IoT</h4>
+                <p>
+                    <strong>บทคัดย่อ:</strong> งานวิจัยนี้มุ่งเน้นการแก้ปัญหาความสูญเสียของผลไม้เมืองร้อน โดยการพัฒนาบรรจุภัณฑ์เชิงรุก (Active Smart Packaging) ที่บูรณาการสารสกัดชีวภาพแซนโทนจากเปลือกมังคุดกับเมทริกซ์ฟิล์มกัมเมล็ดแมงลัก ร่วมกับเซ็นเซอร์ DHT22 และ MQ135 ประมวลผลผ่าน ESP32
+                </p>
+                <p>
+                    <strong>ระเบียบวิธีวิจัย:</strong> ทดสอบฤทธิ์การยับยั้ง <i>Aspergillus niger</i> และ <i>Botrytis cinerea</i> ในห้องปฏิบัติการด้วยวิธี Vapor Contact Assay และทดลองขนส่งสภาวะจริงเพื่อประเมินประสิทธิภาพ
+                </p>
+                <p>
+                    <strong>สรุปผลการวิจัย:</strong> เมทริกซ์กัมเมล็ดแมงลักผสมสารแซนโทนมีฤทธิ์ยับยั้งการงอกสปอร์ราได้สูงสุด 94.8% เมื่อทำงานร่วมกับระบบแจ้งเตือนและฉีดพ่นละอองอัตโนมัติ IoT ช่วยยืดอายุการเก็บรักษาสตรอว์เบอร์รีได้ถึง 14 วัน และทุเรียนตัดแต่งได้ 10 วัน โดยไม่ส่งผลต่อกลิ่นและรสชาติสัมผัส
+                </p>
+            </div>
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-xs">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Smart Anti-Fungal IoT Packaging Research Project. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Core Script -->
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            const icon = document.getElementById('themeIcon');
+            if (document.body.classList.contains('light')) {
+                icon.className = "fa-solid fa-moon";
+            } else {
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+
+        // Modal Controls
+        function openModal() { document.getElementById('paperModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('paperModal').classList.add('hidden'); }
+
+        // 3D Three.js Setup
+        let scene, camera, renderer, boxGroup, lidMesh, trayMesh, sensorMesh;
+        let isExploded = false;
+
+        function init3D() {
+            const container = document.getElementById('threejs-canvas');
+            if (!container) return;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0f172a);
+
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(24, 20, 28);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+            }
+
+            // Lighting
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight.position.set(15, 25, 15);
+            scene.add(dirLight);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+            // Box Master Group
+            boxGroup = new THREE.Group();
+            scene.add(boxGroup);
+
+            // Outer Box
+            const boxGeo = new THREE.BoxGeometry(15, 7.5, 11);
+            const boxMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.5 });
+            const boxMesh = new THREE.Mesh(boxGeo, boxMat);
+            boxGroup.add(boxMesh);
+
+            // Lid Mesh
+            const lidGeo = new THREE.BoxGeometry(15.4, 1.4, 11.4);
+            const lidMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.4 });
+            lidMesh = new THREE.Mesh(lidGeo, lidMat);
+            lidMesh.position.set(0, 4.4, 0);
+            boxGroup.add(lidMesh);
+
+            // Tray Mesh (Basil Seed Gum Matrix)
+            const trayGeo = new THREE.BoxGeometry(14, 2.8, 10);
+            const trayMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.3 });
+            trayMesh = new THREE.Mesh(trayGeo, trayMat);
+            trayMesh.position.set(0, -1.2, 0);
+            boxGroup.add(trayMesh);
+
+            // Sensor Module Node (ESP32 / Sensors)
+            const sensorGeo = new THREE.CylinderGeometry(1.2, 1.2, 0.7, 16);
+            const sensorMat = new THREE.MeshStandardMaterial({ color: 0x06b6d4, metalness: 0.7, roughness: 0.2 });
+            sensorMesh = new THREE.Mesh(sensorGeo, sensorMat);
+            sensorMesh.position.set(0, 3.1, 0);
+            boxGroup.add(sensorMesh);
+
+            // Fruits
+            const fruitGroup = new THREE.Group();
+            const fruitMat = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 });
+            const positions = [
+                [-4, 1.2, -3], [-1, 1.2, -3], [2, 1.2, -3], [5, 1.2, -3],
+                [-4, 1.2, 1.5], [-1, 1.2, 1.5], [2, 1.2, 1.5], [5, 1.2, 1.5]
+            ];
+            positions.forEach(p => {
+                const f = new THREE.Mesh(new THREE.SphereGeometry(1.1, 16, 16), fruitMat);
+                f.position.set(...p);
+                fruitGroup.add(f);
+            });
+            boxGroup.add(fruitGroup);
+
+            // Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+                boxGroup.rotation.y += 0.0025;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        }
+
+        // 3D Controls
+        document.getElementById('btnExplode').addEventListener('click', () => {
+            isExploded = !isExploded;
+            lidMesh.position.y = isExploded ? 11 : 4.4;
+            sensorMesh.position.y = isExploded ? 7.5 : 3.1;
+            trayMesh.position.y = isExploded ? -5.5 : -1.2;
+        });
+
+        document.getElementById('btnReset3D').addEventListener('click', () => {
+            camera.position.set(24, 20, 28);
+        });
+
+        // Telemetry Chart Setup
+        let telemetryChart;
+        function initCharts() {
+            const ctxTelemetry = document.getElementById('telemetryChart').getContext('2d');
+            telemetryChart = new Chart(ctxTelemetry, {
+                type: 'line',
+                data: {
+                    labels: ['10:00', '10:05', '10:10', '10:15', '10:20', '10:25', '10:30'],
+                    datasets: [
+                        { label: 'อุณหภูมิ DHT22 (°C)', data: [22.0, 22.2, 22.5, 22.8, 22.5, 22.4, 22.5], borderColor: '#f59e0b', tension: 0.3 },
+                        { label: 'ความชื้นสัมพัทธ์ DHT22 (%RH)', data: [62, 63, 65, 66, 65, 64, 65], borderColor: '#3b82f6', tension: 0.3 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Spoilage Chart
+            const ctxSpoilage = document.getElementById('chartSpoilage').getContext('2d');
+            new Chart(ctxSpoilage, {
+                type: 'line',
+                data: {
+                    labels: ['วันที่ 0', 'วันที่ 4', 'วันที่ 8', 'วันที่ 12', 'วันที่ 16', 'วันที่ 20'],
+                    datasets: [
+                        { label: 'กล่องกระดาษธรรมดา', data: [0, 18, 45, 72, 92, 100], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true },
+                        { label: 'กล่องสารชีวภาพเดิม', data: [0, 8, 22, 38, 55, 68], borderColor: '#f59e0b' },
+                        { label: 'Smart Anti-Fungal IoT Box', data: [0, 2, 5, 10, 16, 24], borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Shelf Life Chart
+            const ctxShelf = document.getElementById('chartShelf').getContext('2d');
+            new Chart(ctxShelf, {
+                type: 'bar',
+                data: {
+                    labels: ['สตรอว์เบอร์รี', 'ทุเรียนตัดแต่ง', 'มะม่วงสุก', 'องุ่นสด'],
+                    datasets: [
+                        { label: 'กล่องบรรจุทั่วไป (วัน)', data: [4, 3, 6, 5], backgroundColor: '#64748b' },
+                        { label: 'Smart Anti-Fungal IoT (วัน)', data: [14, 10, 18, 15], backgroundColor: '#06b6d4' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Scenario Controller
+        function setScenario(type) {
+            let temp = 22.5, rh = 65, status = "STANDBY";
+            if (type === 'warning') { temp = 28.5; rh = 84; status = "MONITORING"; }
+            if (type === 'danger') { temp = 34.0; rh = 96; status = "ACTIVE SPRAY"; }
+
+            document.getElementById('tempVal').innerText = temp.toFixed(1);
+            document.getElementById('rhVal').innerText = rh.toFixed(1);
+            document.getElementById('statusVal').innerText = status;
+
+            telemetryChart.data.labels.push(new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+            telemetryChart.data.datasets[0].data.push(temp);
+            telemetryChart.data.datasets[1].data.push(rh);
+            if (telemetryChart.data.labels.length > 8) {
+                telemetryChart.data.labels.shift();
+                telemetryChart.data.datasets[0].data.shift();
+                telemetryChart.data.datasets[1].data.shift();
+            }
+            telemetryChart.update();
+        }
+
+        function triggerSpray() {
+            document.getElementById('statusVal').innerText = "DISPENSING...";
+            setTimeout(() => {
+                document.getElementById('statusVal').innerText = "STANDBY";
+                document.getElementById('lastSprayText').innerText = "พ่นล่าสุด: เมื่อสักครู่นี้";
+            }, 2500);
+        }
+
+        // Calculator Logic
+        const rngTemp = document.getElementById('rngTemp');
+        const rngRH = document.getElementById('rngRH');
+        const chkBio = document.getElementById('chkBio');
+
+        function updateCalc() {
+            const temp = parseFloat(rngTemp.value);
+            const rh = parseFloat(rngRH.value);
+            const isBio = chkBio.checked;
+
+            document.getElementById('lblTemp').innerText = temp + " °C";
+            document.getElementById('lblRH').innerText = rh + " %";
+
+            let risk = Math.pow(temp / 22, 2) * Math.pow(rh / 55, 3) * 3.2;
+            if (isBio) risk = risk * 0.15;
+
+            const finalRisk = Math.min(Math.max(risk, 1.0), 99.9).toFixed(1);
+            document.getElementById('resRisk').innerText = finalRisk + "%";
+
+            let days = Math.max(2, Math.round(24 - (temp * 0.45) - (rh * 0.12)));
+            if (isBio) days = Math.round(days * 2.4);
+            document.getElementById('resDays').innerText = days + " วัน";
+            document.getElementById('resCompare').innerText = isBio ? `นานกว่าปกติ +${Math.round(days * 0.6)} วัน` : "เท่ากล่องปกติ";
+
+            const badge = document.getElementById('resBadge');
+            if (finalRisk < 25) {
+                badge.className = "text-xs px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800 inline-block";
+                badge.innerText = "ความเสี่ยงต่ำ (Low Risk)";
+            } else if (finalRisk < 60) {
+                badge.className = "text-xs px-3 py-1 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800 inline-block";
+                badge.innerText = "ความเสี่ยงปานกลาง (Medium Risk)";
+            } else {
+                badge.className = "text-xs px-3 py-1 rounded-full bg-rose-950 text-rose-300 font-bold border border-rose-800 inline-block";
+                badge.innerText = "ความเสี่ยงสูงวิกฤต (High Risk)";
+            }
+        }
+
+        rngTemp.addEventListener('input', updateCalc);
+        rngRH.addEventListener('input', updateCalc);
+        chkBio.addEventListener('change', updateCalc);
+
+        // Init
+        window.addEventListener('load', () => {
+            init3D();
+            initCharts();
+            updateCalc();
+        });
+    </script>
+</body>
+</html>
